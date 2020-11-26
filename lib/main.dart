@@ -44,12 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             TextButton(
-              onPressed: _futureExecuteOrderTester.runFutureInSyncMethodExample,
-              child: Text('Future sync method example'),
+              onPressed: _futureExecuteOrderTester.runSimpleFutureExample,
+              child: Text('Future method example'),
             ),
             TextButton(
               onPressed:
-                  _futureExecuteOrderTester.runFutureInAsyncMethodExample,
+                  _futureExecuteOrderTester.runFutureWithAwaitExample,
               child: Text('Future async method example'),
             ),
             TextButton(
@@ -61,8 +61,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('Run completer example'),
             ),
             TextButton(
-              onPressed: _streamTester.runSingleSubscriptionStreamExample,
-              child: Text('Run single subscription stream example'),
+              onPressed: _streamTester.runStreamSimpleExample,
+              child: Text('Run simple stream example'),
+            ),
+            TextButton(
+              onPressed: _streamTester.runStreamAwaitedSimpleExample,
+              child: Text('Run simple stream with await example'),
+            ),
+            TextButton(
+              onPressed: _streamTester.runBroadcastStreamExample,
+              child: Text('Run broadcast stream example'),
             ),
             TextButton(
               onPressed: _streamTester.runStreamSubscriptionExample,

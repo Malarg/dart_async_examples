@@ -2,61 +2,93 @@ import 'dart:async';
 
 class StreamTester {
   ///пример single-subscription стрима
-  void runSingleSubscriptionStreamExample() {
-    print('single-subscription stream example started');
-    try {
-      final stream = Stream.fromIterable([1, 2, 3, 4, 5]);
-      stream.listen((number) {
-        print('Listener 1. number: $number');
-      });
-      stream.listen((number) {
-        print('Listener 2. number: $number');
-      });
-    } catch (e) {
-      print('error: $e');
+  void runStreamSimpleExample() {
+    print('Simple stream example started');
+    final stream = Stream.fromIterable([1, 2, 3, 4, 5]);
+    stream.listen((number) {
+      print('Number: $number');
+    });
+    print('Simple stream example started');
+  }
+
+  ///пример single-subscription стрима с использованием await
+  void runStreamAwaitedSimpleExample() async {
+    print('Simple stream example with await started');
+    final stream = Stream.fromIterable([1, 2, 3, 4, 5]);
+    await for (final number in stream) {
+      print('Number: $number');
     }
-    print('single-subscription stream example finished');
+    print('Simple stream example with await started');
+  }
+
+  ///пример broadcast стрима
+  void runBroadcastStreamExample() {
+    print('Broadcast stream example started');
+    final streamController = StreamController.broadcast();
+    streamController.stream.listen((number) {
+      print('Listener 1: $number');
+    });
+    streamController.stream.listen((number) {
+      print('Listener 2: $number');
+    });
+    streamController.sink.add(1);
+    streamController.sink.add(2);
+    streamController.sink.add(3);
+    streamController.sink.add(4);
+    streamController.sink.add(5);
+    streamController.close();
+    print('Broadcast stream example finished');
+  }
+
+  ///пример StreamController
+  void runStreamControllerExample() {
+    print('Broadcast stream example started');
+    final streamController = StreamController.broadcast();
+    streamController.onListen = () {
+      print('onListen invoked');
+    };
+    streamController.onCancel = () {
+      print('onCancel invoked');
+    };
+    streamController.stream.listen((number) {
+      print('Listener: $number');
+    });
+    streamController.sink.add(1);
+    streamController.sink.add(2);
+    streamController.sink.add(3);
+    streamController.sink.add(4);
+    streamController.sink.add(5);
+    streamController.close();
+    print('Broadcast stream example finished');
   }
 
   ///пример для демонстрации возможностей StreamSubscription
   void runStreamSubscriptionExample() {
     print('StreamSubscription example started');
-    final stream = Stream.fromIterable([1, 2, 3, 4, 5]);
-    StreamSubscription subscription;
-
-    subscription = stream.listen((number) {
-      print('Listener 1. number: $number');
-      if (number == 3) {
-        subscription.cancel();
-      }
-    });
-
-    subscription.onDone(() {
-      print('stream is done');
-    });
-    subscription.onError((e) {
-      print('Stream error');
-    });
-
-    print('StreamSubscription example finished');
-  }
-
-  ///Пример, показывающий работу StreamController
-  void runStreamControllerExample() async {
-    print('StreamController example started');
     final streamController = StreamController.broadcast();
-    streamController.stream.listen((number) {
-      print('number: $number');
+    streamController.onListen = () {
+      print('onListen invoked');
+    };
+    streamController.onCancel = () {
+      print('onCancel invoked');
+    };
+    final subscribtion = streamController.stream.listen((number) {
+      print('Listener: $number');
     });
-    streamController.stream.listen((number) {
-      print('number: $number'.toUpperCase());
+    subscribtion.onDone(() {
+      subscribtion.cancel();
+      print('Done');
     });
-    streamController.add(1);
-    streamController.add(3);
-    streamController.add(5);
-    streamController.addError(Exception('dangerous exception'));
+    subscribtion.onError((error) {
+      print('Error: $error');
+    });
+    streamController.sink.add(1);
+    streamController.sink.add(2);
+    streamController.sink.add(3);
+    streamController.sink.add(4);
+    streamController.sink.add(5);
     streamController.close();
-    print('StreamController example finished');
+    print('StreamSubscription example finished');
   }
 
   Future<void> runMultiStreamControllerExample() async {

@@ -1,27 +1,28 @@
 import 'dart:async';
 
 class CompleterTester {
-  Completer completer;
   void runCompleterInitTest() async {
-    try {
-      print('Sum positive: ${await calculateOnlyPositive(5, 7)}');
-      print('Sum negative: ${await calculateOnlyPositive(-5, -7)}');
-    } catch (e) {
-      print('Error: $e');
-    }
+    print('Completer example started');
+    var sumCompleter = SumCompleter();
+    var sum = await sumCompleter.sum(20, 22);
+    print('Completer result: ' + sum.toString());
+    print('Completer example finished');
+  }
+}
+
+class SumCompleter {
+  Completer<int> completer = Completer();
+
+  Future<int> sum(int a, int b) {
+    _sumAsync(a, b);
+    return completer.future;
   }
 
-  ///Складывает только положительные числа, иначе выдает ошибку
-  Future<int> calculateOnlyPositive(int a, int b) async {
-    completer = Completer<int>();
-    
-    if (a > 0 || b > 0) {
-      final result = a + b;
-      completer.complete(result);
-    } else {
-      completer.completeError('One of numbers is negative');
-    }
-    
-    return completer.future;
+  void _sumAsync(int a, int b) {
+    Future.delayed(Duration(seconds: 3), () {
+      return a + b;
+    }).then((value) {
+      completer.complete(value);
+    });
   }
 }
