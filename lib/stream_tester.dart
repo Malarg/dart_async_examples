@@ -1,24 +1,25 @@
 import 'dart:async';
 
 class StreamTester {
-  ///пример single-subscription стрима
   void runStreamSimpleExample() {
     print('Simple stream example started');
     final stream = Stream.fromIterable([1, 2, 3, 4, 5]);
     stream.listen((number) {
-      print('Number: $number');
+      print('listener 1: $number');
     });
-    print('Simple stream example started');
+    stream.listen((number) {
+      print('listener 2: $number');
+    });
+    print('Simple stream example finished');
   }
 
-  ///пример single-subscription стрима с использованием await
   void runStreamAwaitedSimpleExample() async {
     print('Simple stream example with await started');
     final stream = Stream.fromIterable([1, 2, 3, 4, 5]);
     await for (final number in stream) {
       print('Number: $number');
     }
-    print('Simple stream example with await started');
+    print('Simple stream example with await finished');
   }
 
   ///пример broadcast стрима
@@ -28,8 +29,12 @@ class StreamTester {
     streamController.stream.listen((number) {
       print('Listener 1: $number');
     });
-    streamController.stream.listen((number) {
+    StreamSubscription sub2;
+    sub2 = streamController.stream.listen((number) {
       print('Listener 2: $number');
+      if (number == 3) {
+        sub2.cancel();
+      }
     });
     streamController.sink.add(1);
     streamController.sink.add(2);
@@ -72,14 +77,14 @@ class StreamTester {
     streamController.onCancel = () {
       print('onCancel invoked');
     };
-    final subscribtion = streamController.stream.listen((number) {
+    final subscription = streamController.stream.listen((number) {
       print('Listener: $number');
     });
-    subscribtion.onDone(() {
-      subscribtion.cancel();
+    subscription.onDone(() {
+      subscription.cancel();
       print('Done');
     });
-    subscribtion.onError((error) {
+    subscription.onError((error) {
       print('Error: $error');
     });
     streamController.sink.add(1);
@@ -91,29 +96,16 @@ class StreamTester {
     print('StreamSubscription example finished');
   }
 
-  Future<void> runMultiStreamControllerExample() async {
-    print('MultiStreamController example started');
-    Stream.multi((controller) {
-      controller.sink.add(1);
-      controller.sink.add(2);
-      controller.sink.add(4);
-      controller.addSync(3);
-      controller.onListen = () {
-        print('listen');
-      };
-    }, isBroadcast: true);
-    print('MultiStreamController example finished');
-  }
-
   void runStreamIteratorExample() async {
-    print('StreamIterator example started');
+    print('StreamIteratorExample started');
     var stream = Stream.fromIterable([1, 2, 3]);
     var iterator = StreamIterator(stream);
+    bool moveResult;
     do {
-      await iterator.moveNext();
+      moveResult = await iterator.moveNext();
       print('number: ${iterator.current}');
-    } while (iterator.current != null);
-    print('StreamIterator example finished');
+    } while (moveResult);
+    print('StreamIteratorExample finished');
   }
 
   void runStreamTransformerExample() async {
@@ -123,7 +115,7 @@ class StreamTester {
       sink.add(data * 2);
     });
 
-    StreamController controller = new StreamController();
+    StreamController controller = StreamController();
     controller.stream.transform(doubleTransformer).listen((data) {
       print('data: $data');
     });

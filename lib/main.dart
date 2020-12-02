@@ -40,59 +40,57 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            TextButton(
-              onPressed: _futureExecuteOrderTester.runSimpleFutureExample,
-              child: Text('Future method example'),
-            ),
-            TextButton(
-              onPressed:
-                  _futureExecuteOrderTester.runFutureWithAwaitExample,
-              child: Text('Future async method example'),
-            ),
-            TextButton(
-              onPressed: _futureExecuteOrderTester.runAwaitingMultipleFutures,
-              child: Text('Multiple futures method example'),
-            ),
-            TextButton(
-              onPressed: _completerTester.runCompleterInitTest,
-              child: Text('Run completer example'),
-            ),
-            TextButton(
-              onPressed: _streamTester.runStreamSimpleExample,
-              child: Text('Run simple stream example'),
-            ),
-            TextButton(
-              onPressed: _streamTester.runStreamAwaitedSimpleExample,
-              child: Text('Run simple stream with await example'),
-            ),
-            TextButton(
-              onPressed: _streamTester.runBroadcastStreamExample,
-              child: Text('Run broadcast stream example'),
-            ),
-            TextButton(
-              onPressed: _streamTester.runStreamSubscriptionExample,
-              child: Text('Run stream subscription example'),
-            ),
-            TextButton(
-              onPressed: _streamTester.runStreamControllerExample,
-              child: Text('Run stream controller example'),
-            ),
-            TextButton(
-              onPressed: _streamTester.runMultiStreamControllerExample,
-              child: Text('Run multi stream controller example'),
-            ),
-            TextButton(
-              onPressed: _streamTester.runStreamIteratorExample,
-              child: Text('Run stream iterator example'),
-            ),
-            TextButton(
-              onPressed: _streamTester.runStreamTransformerExample,
-              child: Text('Run stream transformer example'),
-            ),
-          ],
+        child: SingleChildScrollView(
+                  child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              TextButton(
+                onPressed: _futureExecuteOrderTester.runSimpleFutureExample,
+                child: Text('Future method example'),
+              ),
+              TextButton(
+                onPressed:
+                    _futureExecuteOrderTester.runFutureWithAwaitExample,
+                child: Text('Future async method example'),
+              ),
+              TextButton(
+                onPressed: _futureExecuteOrderTester.runAwaitingMultipleFutures,
+                child: Text('Multiple futures method example'),
+              ),
+              TextButton(
+                onPressed: _completerTester.runCompleterInitTest,
+                child: Text('Run completer example'),
+              ),
+              TextButton(
+                onPressed: _streamTester.runStreamSimpleExample,
+                child: Text('Run simple stream example'),
+              ),
+              TextButton(
+                onPressed: _streamTester.runStreamAwaitedSimpleExample,
+                child: Text('Run simple stream with await example'),
+              ),
+              TextButton(
+                onPressed: _streamTester.runBroadcastStreamExample,
+                child: Text('Run broadcast stream example'),
+              ),
+              TextButton(
+                onPressed: _streamTester.runStreamSubscriptionExample,
+                child: Text('Run stream subscription example'),
+              ),
+              TextButton(
+                onPressed: _streamTester.runStreamControllerExample,
+                child: Text('Run stream controller example'),
+              ),
+              TextButton(
+                onPressed: _streamTester.runStreamIteratorExample,
+                child: Text('Run stream iterator example'),
+              ),
+              TextButton(
+                onPressed: _streamTester.runStreamTransformerExample,
+                child: Text('Run stream transformer example'),
+              ),
+            ],
+          ),
         ),
       ),
     );
